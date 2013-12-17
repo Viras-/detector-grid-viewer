@@ -148,10 +148,14 @@ class TagOccurenceController extends Controller
          * @param int $tag_id
          */
         public function actionVisualize($tag_id) {
+            $models_tagOccurence = TagOccurence::model()->findAllByAttributes(array(
+                'oid' => $tag_id
+            ));
+            
             $this->render(
                     'visualize', 
                     array(
-                        'tag_id' => $tag_id
+                        'models_tagOccurence' => $models_tagOccurence
                     )
             );
         }
