@@ -26,7 +26,7 @@ class TagOccurenceController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'visualize', 'findTag'),
+                'actions' => array('index', 'view', 'visualize', 'findTag', 'visualizeImage'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -132,12 +132,22 @@ class TagOccurenceController extends Controller {
             'model' => $model,
         ));
     }
+    
+    /**
+     * Display page for visualizing a given tag
+     * @param type $tag_code
+     */
+    public function actionVisualize($tag_code) {
+        $this->render('visualize', array(
+            'tag_code' => $tag_code,
+        ));
+    }
 
     /**
      * Visualize occurence info for a given tag id
      * @param string $tag_code code of tag to find
      */
-    public function actionVisualize($tag_code) {
+    public function actionVisualizeImage($tag_code) {
         // find most recent tag occurence
         $dbCriteria = new CDbCriteria();
         $dbCriteria->order = "timestamp ASC";
@@ -201,9 +211,11 @@ class TagOccurenceController extends Controller {
 
         // disconnect from spread
         spread_disconnect($resource);
-
-        // go back to index page
-        $this->actionIndex();
+        
+        // render redirect page to visualization
+        $this->render('findTag', array(
+            'tag_code' => $tag_code,
+        ));
     }
 
     /**
