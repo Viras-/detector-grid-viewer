@@ -29,7 +29,7 @@
 	<div id="mainmenu">
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
-				array('label'=>'Tags', 'url'=>array('/tagOccurence/index')),
+				array('label'=>'Tags', 'url'=>array('/tagOccurence/search')),
 			),
 		)); ?>
 	</div><!-- mainmenu -->

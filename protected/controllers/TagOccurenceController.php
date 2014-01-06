@@ -7,6 +7,12 @@ class TagOccurenceController extends Controller {
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
     public $layout = '//layouts/column2';
+    
+    /**
+     * Change default action to 'search'
+     * @var string
+     */
+    public $defaultAction = 'search';
 
     /**
      * @return array action filters
@@ -26,113 +32,22 @@ class TagOccurenceController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'visualize', 'findTag', 'visualizeImage'),
+                'actions' => array('visualize', 'findTag', 'visualizeImage', 'search'),
                 'users' => array('*'),
-            ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
-                'users' => array('@'),
-            ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('admin', 'delete'),
-                'users' => array('admin'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
     }
-
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function actionView($id) {
-        $this->render('view', array(
-            'model' => $this->loadModel($id),
-        ));
-    }
-
-    /**
-     * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     */
-    public function actionCreate() {
-        $model = new TagOccurence;
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if (isset($_POST['TagOccurence'])) {
-            $model->attributes = $_POST['TagOccurence'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->tag_occurence_id));
-        }
-
-        $this->render('create', array(
-            'model' => $model,
-        ));
-    }
-
-    /**
-     * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
-     */
-    public function actionUpdate($id) {
-        $model = $this->loadModel($id);
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if (isset($_POST['TagOccurence'])) {
-            $model->attributes = $_POST['TagOccurence'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->tag_occurence_id));
-        }
-
-        $this->render('update', array(
-            'model' => $model,
-        ));
-    }
-
-    /**
-     * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
-     */
-    public function actionDelete($id) {
-        $this->loadModel($id)->delete();
-
-        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if (!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-    }
-
-    /**
-     * Lists all models.
-     */
-    public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('TagOccurence');
-        $this->render('index', array(
-            'dataProvider' => $dataProvider,
-        ));
-    }
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin() {
-        $model = new TagOccurence('search');
-        $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['TagOccurence']))
-            $model->attributes = $_GET['TagOccurence'];
-
-        $this->render('admin', array(
-            'model' => $model,
-        ));
-    }
     
+    /**
+     * Display a search form for tag(s)
+     */
+    public function actionSearch() {
+        $this->render('search');
+    }
+
     /**
      * Display page for visualizing a given tag
      * @param type $tag_code
@@ -200,9 +115,10 @@ class TagOccurenceController extends Controller {
 
     /**
      * Send tag find request to spread daemon
-     * @param string $tag_code code of tag to find
      */
-    public function actionFindTag($tag_code) {
+    public function actionFindTag() {
+        $tag_code = $_POST['tag_code'];
+        
         // connect to spread daemon
         $resource = spread_connect(Yii::app()->params['spreadDaemon'], "viewer" . rand(0, 10000), false);
 
