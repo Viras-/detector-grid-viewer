@@ -83,5 +83,6 @@ return array(
         'adminEmail' => 'webmaster@example.com',
         'spreadDaemon' => '4803@localhost',
         'pixelsPerMeter' => 100,
+        'metersPerDivision' => 4,
     ),
 );

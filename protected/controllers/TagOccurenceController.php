@@ -92,11 +92,11 @@ class TagOccurenceController extends Controller {
         $color_red = imagecolorallocatealpha($im, 255, 0, 0, $alpha_level);
         // upper boundary
         foreach( $models_tagOccurence as $model_tagOccurence ) {
-            imagefilledellipse($im, $model_tagOccurence->reader->positionX * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->reader->positionY * Yii::app()->params['pixelsPerMeter'], ($model_tagOccurence->strength + 1) * 5 * Yii::app()->params['pixelsPerMeter'], ($model_tagOccurence->strength + 1) * 5 * Yii::app()->params['pixelsPerMeter'], $color_red);
+            imagefilledellipse($im, $model_tagOccurence->reader->positionX * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->reader->positionY * Yii::app()->params['pixelsPerMeter'], ($model_tagOccurence->strength + 1) * Yii::app()->params['metersPerDivision'] * Yii::app()->params['pixelsPerMeter'] * 2, ($model_tagOccurence->strength + 1) * Yii::app()->params['metersPerDivision'] * Yii::app()->params['pixelsPerMeter'] * 2, $color_red);
         }
         // lower boundary
         foreach( $models_tagOccurence as $model_tagOccurence ) {
-            imagefilledellipse($im, $model_tagOccurence->reader->positionX * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->reader->positionY * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->strength * 5 * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->strength * 5 * Yii::app()->params['pixelsPerMeter'], $color_white);
+            imagefilledellipse($im, $model_tagOccurence->reader->positionX * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->reader->positionY * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->strength * Yii::app()->params['metersPerDivision'] * Yii::app()->params['pixelsPerMeter'] * 2, $model_tagOccurence->strength * Yii::app()->params['metersPerDivision'] * Yii::app()->params['pixelsPerMeter'] * 2, $color_white);
         }
         
         // draw a green circle for all readers in this area
