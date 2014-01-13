@@ -82,5 +82,6 @@ return array(
         // this is used in contact page
         'adminEmail' => 'webmaster@example.com',
         'spreadDaemon' => '4803@localhost',
+        'pixelsPerMeter' => 100,
     ),
 );

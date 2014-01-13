@@ -82,7 +82,7 @@ class TagOccurenceController extends Controller {
         ));
         
         // create the basic image
-        $im = imagecreatetruecolor($model_mostRecentTagOccurence->reader->area->width * 50, $model_mostRecentTagOccurence->reader->area->height * 50);
+        $im = imagecreatetruecolor($model_mostRecentTagOccurence->reader->area->width * Yii::app()->params['pixelsPerMeter'], $model_mostRecentTagOccurence->reader->area->height * Yii::app()->params['pixelsPerMeter']);
         // fill image background with white
         $color_white = imagecolorallocate($im, 255, 255, 255);
         imagefill($im, 0, 0, $color_white);
@@ -92,17 +92,17 @@ class TagOccurenceController extends Controller {
         $color_red = imagecolorallocatealpha($im, 255, 0, 0, $alpha_level);
         // upper boundary
         foreach( $models_tagOccurence as $model_tagOccurence ) {
-            imagefilledellipse($im, $model_tagOccurence->reader->positionX * 50, $model_tagOccurence->reader->positionY * 50, ($model_tagOccurence->strength + 1) * 5 * 50, ($model_tagOccurence->strength + 1) * 5 * 50, $color_red);
+            imagefilledellipse($im, $model_tagOccurence->reader->positionX * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->reader->positionY * Yii::app()->params['pixelsPerMeter'], ($model_tagOccurence->strength + 1) * 5 * Yii::app()->params['pixelsPerMeter'], ($model_tagOccurence->strength + 1) * 5 * Yii::app()->params['pixelsPerMeter'], $color_red);
         }
         // lower boundary
         foreach( $models_tagOccurence as $model_tagOccurence ) {
-            imagefilledellipse($im, $model_tagOccurence->reader->positionX * 50, $model_tagOccurence->reader->positionY * 50, $model_tagOccurence->strength * 5 * 50, $model_tagOccurence->strength * 5 * 50, $color_white);
+            imagefilledellipse($im, $model_tagOccurence->reader->positionX * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->reader->positionY * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->strength * 5 * Yii::app()->params['pixelsPerMeter'], $model_tagOccurence->strength * 5 * Yii::app()->params['pixelsPerMeter'], $color_white);
         }
         
         // draw a green circle for all readers in this area
         $color_green = imagecolorallocate($im, 0, 255, 0);
         foreach( $models_reader as $model_reader ) {
-            imagefilledellipse($im, $model_reader->positionX * 50, $model_reader->positionY * 50, 10, 10, $color_green);
+            imagefilledellipse($im, $model_reader->positionX * Yii::app()->params['pixelsPerMeter'], $model_reader->positionY * Yii::app()->params['pixelsPerMeter'], 10, 10, $color_green);
         }
 
         // output image to browser
